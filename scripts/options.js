@@ -1,11 +1,7 @@
-function addWhitelistItem(serviceName, urlKey) {
+function addWhitelistItem(urlKey) {
     chrome.storage.sync.get({whitelist: []}, (data) => {
         if (!chrome.runtime.lastError) {
-            data.whitelist.push({
-              serviceName: serviceName,
-              urlKey: urlKey,
-              description: "Custom"
-            })
+            data.whitelist.push(urlKey)
             chrome.storage.sync.set({
                 whitelist: data.whitelist 
             })
@@ -16,11 +12,11 @@ function addWhitelistItem(serviceName, urlKey) {
 }
 
 
-function addBlacklistItem(serviceName, urlKey) {
+function addBlacklistItem(urlKey) {
     chrome.storage.sync.get({blacklist: []}, (data) => {
         if (!chrome.runtime.lastError) {
             data.blacklist.push({
-              serviceName: serviceName,
+              serviceName: "Custom",
               urlKey: urlKey,
               description: "Custom"
             })
@@ -46,38 +42,38 @@ function readLists() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  document.querySelector("#blacklistForm").addEventListener("submit", function(e, item, urlKey) {
+  document.querySelector("#blacklistForm").addEventListener("submit", function(e) {
       e.preventDefault()
-      addBlacklistItem(document.getElementById("blServiceName").value, document.getElementById("blUrlKey").value)
+      addBlacklistItem(document.getElementById("wlUrlKey").value)
   });
   document.querySelector('#printBlacklistBtn').addEventListener('click', readLists);
 
+  document.querySelector("#whitelistForm").addEventListener("submit", function(e) {
+      e.preventDefault()
+      addWhitelistItem(document.getElementById("wlUrlKey").value)
+  });
+  document.querySelector('#printWhitelistBtn').addEventListener('click', readLists);
+
   chrome.storage.sync.get({blacklist: [], whitelist: []}, (data) => {
-    document.querySelector("#whitelistForm").addEventListener("submit", function(e, item, urlKey) {
-        e.preventDefault()
-        addWhitelistItem(document.getElementById("wlServiceName").value, document.getElementById("wlUrlKey").value)
-    });
+    if (!chrome.runtime.lastError) {
+      let blList = document.querySelector("#blacklist")
 
-    document.querySelector('#printBlacklistBtn').addEventListener('click', readLists);
-      if (!chrome.runtime.lastError) {
-        let blList = document.querySelector("#blacklist")
-
-        for (let i = 0; i < data.blacklist.length; i++) {
-          let div = document.createElement("div")
-          div.innerHTML = `${data.blacklist[i].urlKey}`
-          blList.appendChild(div)
-        }
-
-        let wlList = document.querySelector("#whitelist")
-
-        for (let i = 0; i < data.whitelist.length; i++) {
-          let div = document.createElement("div")
-          div.innerHTML = `${data.whitelist[i].urlKey}`
-          wlList.appendChild(div)
-        }
-      } else {
-          console.log(chrome.runtime.lastError)
+      for (let i = 0; i < data.blacklist.length; i++) {
+        let div = document.createElement("div")
+        div.innerHTML = `${data.blacklist[i].urlKey}`
+        blList.appendChild(div)
       }
+
+      let wlList = document.querySelector("#whitelist")
+
+      for (let i = 0; i < data.whitelist.length; i++) {
+        let div = document.createElement("div")
+        div.innerHTML = `${data.whitelist[i]}`
+        wlList.appendChild(div)
+      }
+    } else {
+        console.log(chrome.runtime.lastError)
+    }
   })
 })
 
