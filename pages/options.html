@@ -1,12 +1,24 @@
 <html>
+  <head>
+    <style>
+      #printBlacklistBtn, #printWhitelistBtn {
+        visibility: hidden;
+      }
+    </style>
+  </head>
   <body>
-    <h1>This is the options page</h1>
+    <h1>Paywall Halt: Options</h1>
 
     <h1>Blacklist</h1>
     <div id="blacklist">
     </div>
     <form id="blacklistForm">
-      <input id="blacklistItem" type="text">
+      <input id="blServiceName" type="text">
+      <label for="blServiceName">Blacklist Service Name (ex. The New York Times)</label>
+      <br>
+      <input id="blUrlKey" type="text">
+      <label for="blUrlKey">Blacklist Domain Name (ex. nytimes.com)</label>
+      <br>
       <button type="submit">Add to Blacklist</button>
     </form>
 
@@ -14,7 +26,12 @@
     <div id="whitelist">
     </div>
     <form id="whitelistForm">
-      <input id="whitelistItem" type="text">
+      <input id="wlServiceName" type="text">
+      <label for="wlServiceName">Whitelist Service Name (ex. The New York Times)</label>
+      <br>
+      <input id="wlUrlKey" type="text">
+      <label for="wlUrlKey">Whitelist Domain Name (ex. nytimes.com)</label>
+      <br>
       <button type="submit">Add to Whitelist</button>
     </form>
 

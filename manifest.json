@@ -2,7 +2,7 @@
     "name": "Paywall Halt!",
     "description": "Flags Paywalls",
     "version": "1.0",
-    "manifest_version": 3,
+    "manifest_version": 2,
     "content_scripts": [
         {
             "matches": [
@@ -12,17 +12,14 @@
                 "https://duckduckgo.com/*",
                 "https://bing.com/*",
                 "https://www.bing.com/*",
-                "https://yahoo.com",
-                "https://www.yahoo.com"
+                "https://yahoo.com/*",
+                "https://www.yahoo.com/*"
             ],
             "all_frames": true,
             "js": ["scripts/content_script.js"],
             "run_at": "document_end"
         }
     ],
-    "action": {
-        "default_popup": "pages/popup.html"
-    },
     "options_page": "pages/options.html",
     "permissions": ["storage"],
     "background": {
